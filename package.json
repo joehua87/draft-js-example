@@ -8,11 +8,6 @@
   "main": "lib/index.js",
   "keywords": [],
   "scripts": {
-    "clean": "rimraf lib",
-    "build": "npm run clean && npm run build:js && npm run build:css && npm run build:json",
-    "build:js": "WEBPACK_CONFIG=$(pwd)/webpack.config.js BABEL_DISABLE_CACHE=1 BABEL_ENV=production NODE_ENV=production babel --out-dir='lib' --ignore='__test__/*' src",
-    "build:css": "cpx lib-css/*.css lib && rimraf lib-css",
-    "build:json": "cpx src/**/*.json lib",
     "test": "mocha --require babel-register --require testHelper.js src/**/__test__/*.test.js",
     "test:watch": "mocha --watch --require babel-register --require testHelper.js src/**/__test__/*.test.js"
   },
