@@ -1,14 +1,21 @@
+const path = require('path')
 const webpack = require('webpack')
-const webpackDevMiddleware = require('webpack-dev-middleware')
-const webpackHotMiddleware = require('webpack-hot-middleware')
 const config = require('./webpack.config')
 
-const app = new (require('express'))() // eslint-disable-line
+const Express = require('express')
+const app = new Express() // eslint-disable-line
 const port = 3000
 
-const compiler = webpack(config)
-app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }))
-app.use(webpackHotMiddleware(compiler))
+if (process.env.NODE_ENV === 'development') {
+  const webpackDevMiddleware = require('webpack-dev-middleware')
+  const webpackHotMiddleware = require('webpack-hot-middleware')
+  const compiler = webpack(config)
+  app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }))
+  app.use(webpackHotMiddleware(compiler))
+
+} else {
+  app.use('/static', Express.static(path.join(__dirname, 'static')))
+}
 
 app.get('/', (req, res) => {
   res.sendFile(`${__dirname}/index.html`)
